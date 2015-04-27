@@ -1,0 +1,11 @@
+{
+  "name": "surveillance-interstitial",
+  "version": "1.0.0",
+  "description": "interstitial",
+  "main": "app.js",
+  "author": "Mozilla Foundation",
+  "devDependencies": {
+    "habitat": "0.4.1",
+    "express": "3.4.5"
+  }
+}
