@@ -7,7 +7,7 @@ var app = express(),
   env = new Habitat();
 
 app.configure(function() {
-  app.use(express.static(__dirname));
+  app.use(express.static(__dirname + '/public'));
 });
 
 app.listen(env.get('PORT'), function () {
