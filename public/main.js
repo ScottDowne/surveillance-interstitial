@@ -17,7 +17,7 @@ document.addEventListener( "DOMContentLoaded", function() {
     element.addEventListener("click", function(e) {
       answered.classList.add("fadein");
       answerContainer.classList.add("status-" + type);
-      infoContainer.classList.remove("hidden");
+      infoContainer.classList.add("expand");
       if (index === 3) {
         finalStep.classList.remove("hidden");
       }
