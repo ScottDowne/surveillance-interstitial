@@ -160,18 +160,46 @@ body {
 .hidden {
   display: none;
 }
+.no-option-border {
+  border-color: #2E2E2E;
+}
+.yes-option-border {
+  border-color: #414142;
+}
+.no-option-border,
+.yes-option-border {
+  justify-content: center;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  transition: border-color .5s;
+  border-style: solid;
+  border-width: 1px;
+}
+.cancel-button {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 10px;
+}
+.no-option-border:hover,
+.yes-option-border:hover,
+.no-option-border:active,
+.yes-option-border:active {
+  border-color: #D7D3C8;
+}
 .no-option,
 .yes-option {
   width: 50%;
   height: 100%;
   float: left;
-  justify-content: center;
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
   color: #FFFFFF;
   font-size: 25px;
   cursor: pointer;
+  padding: 30px 40px;
 }
 .step-container {
   overflow: hidden;

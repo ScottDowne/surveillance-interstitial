@@ -3,20 +3,27 @@ document.addEventListener( "DOMContentLoaded", function() {
   var questionNoButtons = document.querySelectorAll(".no-option");
 
   function createClickEvent(element, type, index) {
+    var itemContainer = document.querySelector(".step-" + index);
+    var cancelButton = itemContainer.querySelector(".cancel-button");
+    var unanswered = itemContainer.querySelector(".unanswered");
+    var answerContainer = itemContainer.querySelector(".answer-container");
+    var answered = answerContainer.querySelector(".answered");
+    var infoContainer = itemContainer.querySelector(".info-container");
+    var finalStep = document.querySelector(".final-step");
+    cancelButton.addEventListener("click", function() {
+      answered.classList.remove("fadein");
+      answerContainer.classList.remove("status-" + type);
+    });
     element.addEventListener("click", function(e) {
-      var itemContainer = document.querySelector(".step-" + index);
-      var unanswered = itemContainer.querySelector(".unanswered");
-      var answerContainer = itemContainer.querySelector(".answer-container");
-      var answered = answerContainer.querySelector(".answered");
       answered.classList.add("fadein");
       answerContainer.classList.add("status-" + type);
-      var infoContainer = itemContainer.querySelector(".info-container");
       infoContainer.classList.remove("hidden");
-      var finalStep = document.querySelector(".final-step");
       if (index === 3) {
         finalStep.classList.remove("hidden");
       }
-      window.scroll(0, itemContainer.offsetTop);
+      $('html, body').animate({
+        scrollTop: itemContainer.offsetTop
+      });
     });
   }
 
@@ -27,4 +34,7 @@ document.addEventListener( "DOMContentLoaded", function() {
   for (var i = 0; i < questionNoButtons.length; i++) {
     createClickEvent(questionNoButtons[i], "no", i+1);
   }
+  $(window).on('beforeunload', function() {
+    $('html, body').scrollTop(0);
+  });
 });
