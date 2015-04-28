@@ -83,7 +83,6 @@ html {
 .info-icon {
   width: 120px;
   height: 100px;
-  background-color: purple;
   justify-content: center;
   display: flex;
   flex-shrink: 0;
@@ -109,11 +108,13 @@ html {
   width: 123px;
   transition: right .3s;
   opacity: 0;
+  z-index: -1;
 }
 .status-no .your-answer-container.no-answer,
 .status-yes .your-answer-container.yes-answer {
   right: 40px;
   opacity: 1;
+  z-index: 0;
 }
 .yes-answer {
   right: 203px;
