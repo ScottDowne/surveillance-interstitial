@@ -1,21 +1,22 @@
 document.addEventListener( "DOMContentLoaded", function() {
   var questionYesButtons = document.querySelectorAll(".yes-option");
   var questionNoButtons = document.querySelectorAll(".no-option");
-  
+
   function createClickEvent(element, type, index) {
     element.addEventListener("click", function(e) {
       var itemContainer = document.querySelector(".step-" + index);
       var unanswered = itemContainer.querySelector(".unanswered");
-      unanswered.classList.add("hidden");
       var answerContainer = itemContainer.querySelector(".answer-container");
       var answered = answerContainer.querySelector(".answered");
-      answered.classList.remove("hidden");
-      answered.classList.add("status-" + type);
+      answered.classList.add("fadein");
+      answerContainer.classList.add("status-" + type);
       var infoContainer = itemContainer.querySelector(".info-container");
       infoContainer.classList.remove("hidden");
+      var finalStep = document.querySelector(".final-step");
       if (index === 3) {
-        document.querySelector(".final-step").classList.remove("hidden");
+        finalStep.classList.remove("hidden");
       }
+      window.scroll(0, itemContainer.offsetTop);
     });
   }
 
