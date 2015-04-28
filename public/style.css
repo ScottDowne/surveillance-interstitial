@@ -88,16 +88,33 @@ body {
   border: 1px solid #D7D3C8;
   font-size: 28px;
   font-weight: 300;
-}
-.your-answer-container {
   justify-content: center;
 }
-.your-answer-container,
+.no-answer,
+.yes-answer {
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  width: 32.8%;
+  transition: left .3s;
+}
+.status-no .no-answer,
+.status-yes .yes-answer {
+  left: 50%;
+}
+.yes-answer {
+  left: -133px;
+}
+.no-answer {
+  left: 100%;
+}
 .your-answer {
   width: 50%;
   float: left;
   height: 100%;
-
+}
+.your-answer-container,
+.your-answer {
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -118,7 +135,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  transition: opacity 3s;
+  transition: opacity .3s;
 }
 .fadein {
   opacity: 1;
@@ -136,13 +153,9 @@ body {
 .status-no .answered {
   background-color: #BA3B33;
 }
-.yes-answer,
-.no-answer {
-  display: none;
-}
 .status-yes .yes-answer,
 .status-no .no-answer {
-  display: block;
+  display: flex;
 }
 .hidden {
   display: none;
