@@ -1,6 +1,7 @@
 body {
   background-color: #D7D3C8;
   color: #4D4E53;
+  font-family: 'Open Sans', sans-serif;
 }
 
 * {
@@ -12,7 +13,6 @@ body {
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  font-family: 'Open Sans', sans-serif;
 }
 .vote-box {
   margin: 0 auto;
@@ -34,6 +34,20 @@ body {
 }
 .item-container.expand .question-container {
   background-color: #EAE5DA;
+}
+.petition-link-container {
+  float: right;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 14px;
+}
+.petition-link {
+  color: #0095DD;
+  text-decoration: none;
+}
+.petition-link:hover {
+  color: #00539F;
 }
 .number {
   transition: color .3s;
