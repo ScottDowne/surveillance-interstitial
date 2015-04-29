@@ -30,17 +30,17 @@ body {
   font-weight: 600;
 }
 .item-container.expand .number {
-  color: #4D4E53;
+  color: #A7A49E;
 }
 .item-container.expand .question-container {
-  background-color: #FFFFFF;
+  background-color: #EAE5DA;
 }
 .number {
   transition: color .3s;
   border-radius: 50%;
   width: 60px;
   height: 60px;
-  color: #A7A49E;
+  color: #4D4E53;
   font-weight: 600;
   justify-content: center;
   display: flex;
@@ -68,7 +68,7 @@ html {
 .question-container {
   width: 50%;
   height: 100%;
-  background-color: #EAE5DA;
+  background-color: #FFFFFF;
   float: left;
 }
 .question {
