@@ -19,6 +19,13 @@ document.addEventListener( "DOMContentLoaded", function() {
       answerContainer.classList.remove("status-" + type);
     });
     element.addEventListener("click", function(e) {
+      if (analytics) {
+        analytics.event("question chosen", {
+          label: "question " + index + " chosen",
+          value: type
+        });
+      }
+
       var yesFound = 0;
       answers[index-1] = type;
       for (var i = 0; i < answers.length; i++) {
