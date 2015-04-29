@@ -1,6 +1,7 @@
 document.addEventListener( "DOMContentLoaded", function() {
   var questionYesButtons = document.querySelectorAll(".yes-option");
   var questionNoButtons = document.querySelectorAll(".no-option");
+  var answers = ["yes", "yes", "yes"];
 
   function createClickEvent(element, type, index) {
     var itemContainer = document.querySelector(".step-" + index);
@@ -10,12 +11,28 @@ document.addEventListener( "DOMContentLoaded", function() {
     var answered = answerContainer.querySelector(".answered");
     var infoContainer = itemContainer.querySelector(".info-container");
     var finalStep = document.querySelector(".final-step");
+    var cta1 = finalStep.querySelector(".cta-1");
+    var cta2 = finalStep.querySelector(".cta-2");
     cancelButton.addEventListener("click", function() {
       answered.classList.remove("fadein");
       itemContainer.classList.remove("expand");
       answerContainer.classList.remove("status-" + type);
     });
     element.addEventListener("click", function(e) {
+      var yesFound = 0;
+      answers[index-1] = type;
+      for (var i = 0; i < answers.length; i++) {
+        if (answers[i] === "yes") {
+          yesFound++;
+        }
+      }
+      if (yesFound >= 2) {
+        cta1.classList.remove("hidden");
+        cta2.classList.add("hidden");
+      } else {
+        cta1.classList.add("hidden");
+        cta2.classList.remove("hidden");
+      }
       itemContainer.classList.add("expand");
       answered.classList.add("fadein");
       answerContainer.classList.add("status-" + type);
