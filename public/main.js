@@ -19,7 +19,7 @@ document.addEventListener( "DOMContentLoaded", function() {
       answerContainer.classList.remove("status-" + type);
     });
     element.addEventListener("click", function(e) {
-      if (analytics) {
+      if (window.analytics) {
         analytics.event("question chosen", {
           label: "question " + index + " chosen",
           value: type
