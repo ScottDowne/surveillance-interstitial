@@ -27,11 +27,11 @@ document.addEventListener( "DOMContentLoaded", function() {
         }
       }
       if (yesFound >= 2) {
-        cta1.classList.remove("hidden");
-        cta2.classList.add("hidden");
-      } else {
         cta1.classList.add("hidden");
         cta2.classList.remove("hidden");
+      } else {
+        cta1.classList.remove("hidden");
+        cta2.classList.add("hidden");
       }
       itemContainer.classList.add("expand");
       answered.classList.add("fadein");
