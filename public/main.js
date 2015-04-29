@@ -63,7 +63,7 @@ document.addEventListener( "DOMContentLoaded", function() {
 
   var
   rectangle,
-    radius = 4.5,
+    radius = 7.5,
     iris = document.querySelector('.iris'),
     center;
 
@@ -112,11 +112,12 @@ document.addEventListener( "DOMContentLoaded", function() {
   checkMovement();
 
   function onMouseMove(e) {
+    var pageY = e.pageY - window.pageYOffset;
     mousemoveTime = Date.now();
     eye.classList.remove('wander');
     eye.classList.remove('smooth');
     measureThings();
-    translatePupil(doMaths(e.pageX - center.x, e.pageY - center.y, radius));
+    translatePupil(doMaths(e.pageX - center.x, pageY - center.y, radius));
   }
 
   function onMouseEnter() {
