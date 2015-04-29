@@ -190,7 +190,7 @@ html {
 .status-no .answered {
   background-color: #BA3B33;
 }
-.eye-container {
+.eye-spacing {
   float: left;
   height: 1px;
   width: 20%;
@@ -313,5 +313,291 @@ html {
 @media (min-width: 1200px) {
   .header {
     max-width: 1200px;
+  }
+}
+
+.front {
+  height: 100%;
+  width: 100%;
+}
+
+.privacy-eye {
+  height: 55px;
+  width: 55px;
+  position: absolute;
+  top: 0;
+  padding: 2px;
+  top: -85px;
+  left: -25px;
+}
+
+.eye-container {
+  height: 0;
+  width: 0;
+  flex-shrink: 0;
+  z-index: 2;
+  margin: 0 auto;
+  position: relative;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.eyelid {
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.eye-image {
+  margin-top: -150px;
+  margin-left: -60px;
+}
+
+.eyelid::before,
+.eyelid::after {
+  background: #4D4E53;
+  content: '';
+  display: block;
+  height: 50%;
+  position: absolute;
+  width: 100%;
+  -webkit-animation: real-eyelids 7s infinite;
+  -o-animation: real-eyelids 7s infinite;
+  -moz-animation: real-eyelids 7s infinite;
+  animation: real-eyelids 7s infinite;
+}
+
+.eyelid::before {
+  top: 0;
+  z-index: 100;
+}
+
+.eyelid::after {
+  bottom: 0;
+}
+
+.sclera {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.iris {
+  border: 2px solid #4D4E53;
+  border-radius: 50%;
+  height: 60%;
+  width: 60%;
+  padding: 7.5%;
+  position: relative;
+  top: 19.5%;
+  left: 20.5%;
+}
+
+.privacy-eye.wander .iris {
+  -webkit-animation: searching-eye 7s infinite;
+  -o-animation: searching-eye 7s infinite;
+  -moz-animation: searching-eye 7s infinite;
+  animation: searching-eye 7s infinite;
+}
+
+.privacy-eye.focus .iris {
+  padding: 21%;
+}
+
+.privacy-eye.smooth .iris {
+  transition: padding .3s, transform .2s;
+}
+
+.privacy-eye .iris {
+  transition: padding .3s;
+}
+
+.pupil {
+  background: #4D4E53;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+@-webkit-keyframes real-eyelids {
+  0%,
+  90%,
+  100% {
+    height: 0;
+  }
+  95% {
+    height: 60%;
+  }
+}
+
+@-o-keyframes real-eyelids {
+  0%,
+  90%,
+  100% {
+    height: 0;
+  }
+  95% {
+    height: 60%;
+  }
+}
+
+@-moz-keyframes real-eyelids {
+  0%,
+  90%,
+  100% {
+    height: 0;
+  }
+  95% {
+    height: 60%;
+  }
+}
+
+@keyframes real-eyelids {
+  0%,
+  90%,
+  100% {
+    height: 0;
+  }
+  95% {
+    height: 60%;
+  }
+}
+
+@-webkit-keyframes searching-eye {
+  0%,
+  85.714285716%,
+  100% {
+    top: 17.5%;
+    left: 17.5%;
+  }
+  14.285714286% {
+    top: 17.5%;
+    left: 8%;
+  }
+  28.571428572% {
+    top: 30%;
+    left: 8%;
+  }
+  42.857142858% {
+    top: 30%;
+    left: 30%;
+  }
+  57.142857144% {
+    top: 8%;
+    left: 30%;
+  }
+  71.42857143% {
+    top: 8%;
+    left: 8%;
+  }
+  85.7142857% {
+    top: 0;
+    left: 17.5%;
+  }
+}
+
+@-o-keyframes searching-eye {
+  0%,
+  85.714285716%,
+  100% {
+    top: 17.5%;
+    left: 17.5%;
+  }
+  14.285714286% {
+    top: 17.5%;
+    left: 8%;
+  }
+  28.571428572% {
+    top: 30%;
+    left: 8%;
+  }
+  42.857142858% {
+    top: 30%;
+    left: 30%;
+  }
+  57.142857144% {
+    top: 8%;
+    left: 30%;
+  }
+  71.42857143% {
+    top: 8%;
+    left: 8%;
+  }
+  85.7142857% {
+    top: 0;
+    left: 17.5%;
+  }
+}
+
+@-moz-keyframes searching-eye {
+  0%,
+  85.714285716%,
+  100% {
+    top: 17.5%;
+    left: 17.5%;
+  }
+  14.285714286% {
+    top: 17.5%;
+    left: 8%;
+  }
+  28.571428572% {
+    top: 30%;
+    left: 8%;
+  }
+  42.857142858% {
+    top: 30%;
+    left: 30%;
+  }
+  57.142857144% {
+    top: 8%;
+    left: 30%;
+  }
+  71.42857143% {
+    top: 8%;
+    left: 8%;
+  }
+  85.7142857% {
+    top: 0;
+    left: 17.5%;
+  }
+}
+
+@keyframes searching-eye {
+  0%,
+  85.714285716%,
+  100% {
+    top: 17.5%;
+    left: 17.5%;
+  }
+  14.285714286% {
+    top: 17.5%;
+    left: 8%;
+  }
+  28.571428572% {
+    top: 30%;
+    left: 8%;
+  }
+  42.857142858% {
+    top: 30%;
+    left: 30%;
+  }
+  57.142857144% {
+    top: 8%;
+    left: 30%;
+  }
+  71.42857143% {
+    top: 8%;
+    left: 8%;
+  }
+  85.7142857% {
+    top: 0;
+    left: 17.5%;
   }
 }
