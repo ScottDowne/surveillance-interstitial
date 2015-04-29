@@ -1,27 +1,39 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:600,400,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
     <div class="header"><img src="./assets/logo-mozilla.svg"></div>
     <div class="main">
-      <div class="title">If I'm not under <span class="eye"></span> investigation...</div>
+      <div class="title">
+        <div class="title-1">
+          If I'm not under
+        </div>
+        <div class="eye-container"></div>
+        <div class="title-2">
+          investigation...
+        </div>
+      </div>
       <div class="item-container step-1">
         <div class="step-container">
+          <div class="circle"></div>
           <div class="question-container">
             <div class="number">1</div>
             <div class="question">Should the government monitor my phone calls?</div>
           </div>
           <div class="answer-container">
             <div class="unanswered">
-              <div class="yes-option">
-                <div class="yes-option-border">Yes</div>
-              </div>
-              <div class="no-option">
-                <div class="no-option-border">No</div>
+              <div class="or-option">or</div>
+              <div class="yes-no-option-container">
+                <div class="yes-option">
+                  <div class="yes-option-border">Yes</div>
+                </div>
+                <div class="no-option">
+                  <div class="no-option-border">No</div>
+                </div>
               </div>
             </div>
             <div class="answered">
@@ -32,7 +44,7 @@
               <div class="your-answer-container no-answer">
                 <div>No</div>
               </div>
-              <span class="cancel-button">x</span>
+              <img class="cancel-button" height="30" width="30" src="./assets/icon-close-white.svg">
             </div>
           </div>
         </div>
@@ -41,6 +53,7 @@
             <div class="info-icon"><img src="./assets/icon-phone.svg"></div>
             <div class="info-text">The U.S Government monitors <span class="bold">who</span> you're calling, for <span class="bold">how long</span> and at <span class="bold">what times</span> - even if you're not under suspicion of any wrongdoing. Sections of the Patriot Act allow for the bulk collection of telephone records of millions of innocent people.</div>
           </div>
+          <div class="arrow-container"><img src="./assets/icon-down.svg"></div>
         </div>
       </div>
       <div class="item-container step-2">
@@ -51,11 +64,14 @@
           </div>
           <div class="answer-container">
             <div class="unanswered">
-              <div class="yes-option">
-                <div class="yes-option-border">Yes</div>
-              </div>
-              <div class="no-option">
-                <div class="no-option-border">No</div>
+              <div class="or-option">or</div>
+              <div class="yes-no-option-container">
+                <div class="yes-option">
+                  <div class="yes-option-border">Yes</div>
+                </div>
+                <div class="no-option">
+                  <div class="no-option-border">No</div>
+                </div>
               </div>
             </div>
             <div class="answered">
@@ -66,7 +82,7 @@
               <div class="your-answer-container no-answer">
                 <div>No</div>
               </div>
-              <span class="cancel-button">x</span>
+              <img class="cancel-button" height="30" width="30" src="./assets/icon-close-white.svg">
             </div>
           </div>
         </div>
@@ -75,6 +91,7 @@
             <div class="info-icon"><img src="./assets/icon-mail.svg"></div>
             <div class="info-text">The Patriot Act provision authorizing bulk collection oh phone call data can be used to acquire "<span class="bold">any tangible thing</span>" which could allow the mass surveillance of your emails. Because of a lack of transparency, we don't know how much data they are collecting and for how many people.</div>
           </div>
+          <div class="arrow-container"><img src="./assets/icon-down.svg"></div>
         </div>
       </div>
       <div class="item-container step-3">
@@ -85,11 +102,14 @@
           </div>
           <div class="answer-container">
             <div class="unanswered">
-              <div class="yes-option">
-                <div class="yes-option-border">Yes</div>
-              </div>
-              <div class="no-option">
-                <div class="no-option-border">No</div>
+              <div class="or-option">or</div>
+              <div class="yes-no-option-container">
+                <div class="yes-option">
+                  <div class="yes-option-border">Yes</div>
+                </div>
+                <div class="no-option">
+                  <div class="no-option-border">No</div>
+                </div>
               </div>
             </div>
             <div class="answered">
@@ -100,7 +120,7 @@
               <div class="your-answer-container no-answer">
                 <div>No</div>
               </div>
-              <span class="cancel-button">x</span>
+              <img class="cancel-button" height="30" width="30" src="./assets/icon-close-white.svg">
             </div>
           </div>
         </div>
@@ -109,6 +129,7 @@
             <div class="info-icon"><img src="./assets/icon-search.svg"></div>
             <div class="info-text">The Patriot Act allows for phone call data collection, the same laws could be used to authorize <span class="bold">mass surveillance of Internet search data</span>. Because of lack of transparency, we can't know for sure how much data the U.S. government is collecting and for how many people.</div>
           </div>
+          <div class="arrow-container"><img src="./assets/icon-down.svg"></div>
         </div>
       </div>
       <div class="final-step hidden">

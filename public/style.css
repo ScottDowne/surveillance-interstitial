@@ -29,7 +29,14 @@ body {
 .bold {
   font-weight: 600;
 }
+.item-container.expand .number {
+  color: #4D4E53;
+}
+.item-container.expand .question-container {
+  background-color: #FFFFFF;
+}
 .number {
+  transition: color .3s;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -48,6 +55,7 @@ html {
   overflow-y: scroll;
 }
 .question-container {
+  transition: background-color .3s;
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -75,7 +83,7 @@ html {
   max-height: 200px;
 }
 .info-wrapper {
-  padding: 40px 50px;
+  padding: 40px 50px 10px;
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -94,11 +102,26 @@ html {
   font-size: 14px;
   color: #D7D3C8;
 }
+.circle {
+  background-color: #D7D3C8;
+  height: 200px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1;
+  width: 210px;
+  top: -165px;
+  left: 50%;
+  margin-left: -105px;
+}
 .your-answer-container {
   border: 1px solid #D7D3C8;
   font-size: 28px;
   font-weight: 300;
   justify-content: center;
+}
+.arrow-container {
+  text-align: center;
+  margin-bottom: 5px;
 }
 .your-answer-container.no-answer,
 .your-answer-container.yes-answer {
@@ -167,6 +190,11 @@ html {
 .status-no .answered {
   background-color: #BA3B33;
 }
+.eye-container {
+  float: left;
+  height: 1px;
+  width: 20%;
+}
 .status-yes .yes-answer,
 .status-no .no-answer {
   display: flex;
@@ -192,12 +220,29 @@ html {
   border-style: solid;
   border-width: 1px;
 }
+.yes-no-option-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+.or-option {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: #757575;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 14px;
+}
 .cancel-button {
   cursor: pointer;
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0 10px 6px 10px;
 }
 .no-option-border:hover,
 .yes-option-border:hover,
@@ -211,18 +256,32 @@ html {
   height: 100%;
   float: left;
   color: #FFFFFF;
-  font-size: 25px;
+  font-size: 27px;
   cursor: pointer;
   padding: 30px 40px;
+  font-weight: 300;
 }
 .step-container {
+  position: relative;
   overflow: hidden;
   height: 150px;
 }
 .title {
-  padding: 35px 30px;
+  padding: 35px 0;
   font-weight: 300;
   font-size: 45px;
+  overflow: hidden;
+}
+.title-1 {
+  text-align: right;
+}
+.title-2 {
+  text-align: left;
+}
+.title-1,
+.title-2 {
+  float: left;
+  width: 40%;
 }
 .main {
   margin-bottom: 185px;
@@ -238,7 +297,7 @@ html {
   font-weight: light;
   box-shadow: 0 2px 0 #B2B0A8, inset 0 -2px 0 #1F6DB7;
   cursor: pointer;
-  padding: 15px 60px 25px;
+  padding: 15px 60px 20px;
   border-radius: 5px;
   color: #FFFFFF;
   font-size: 30px;

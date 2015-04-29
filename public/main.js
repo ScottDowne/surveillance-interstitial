@@ -12,9 +12,11 @@ document.addEventListener( "DOMContentLoaded", function() {
     var finalStep = document.querySelector(".final-step");
     cancelButton.addEventListener("click", function() {
       answered.classList.remove("fadein");
+      itemContainer.classList.remove("expand");
       answerContainer.classList.remove("status-" + type);
     });
     element.addEventListener("click", function(e) {
+      itemContainer.classList.add("expand");
       answered.classList.add("fadein");
       answerContainer.classList.add("status-" + type);
       setTimeout(function() {
