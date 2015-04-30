@@ -20,9 +20,8 @@ document.addEventListener( "DOMContentLoaded", function() {
     });
     element.addEventListener("click", function(e) {
       if (window.analytics) {
-        analytics.event("question chosen", {
-          label: "question " + index + " chosen",
-          value: type
+        analytics.event("Answered Question " + index, {
+          label: type
         });
       }
 
@@ -50,7 +49,7 @@ document.addEventListener( "DOMContentLoaded", function() {
         }
         setTimeout(function() {
           $('html, body').animate({
-            scrollTop: itemContainer.offsetTop
+            scrollTop: itemContainer.offsetTop + itemContainer.offsetHeight
           });
         }, 300);
       }, 300);
@@ -107,7 +106,7 @@ document.addEventListener( "DOMContentLoaded", function() {
   function checkMovement() {
     var nowTime = Date.now();
     var diffTime = (nowTime - mousemoveTime) / 1000;
-    if (diffTime > 3 && !eye.classList.contains('focus')) {
+    if (diffTime > 3 && !eye.classList.contains('focus') && !eye.classList.contains('wander')) {
       iris.style.transform = 'translate(0, 0)';
       eye.classList.add('smooth');
       eye.classList.add('wander');

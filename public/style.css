@@ -306,17 +306,42 @@ html {
   font-weight: 300;
 }
 .cta-button {
+  position: relative;
   font-family: inherit;
   font-weight: 300;
   font-weight: light;
-  box-shadow: 0 2px 0 #B2B0A8, inset 0 -2px 0 #1F6DB7;
   cursor: pointer;
   padding: 15px 60px 20px;
   border-radius: 5px;
   color: #FFFFFF;
   font-size: 30px;
   text-decoration: none;
-  background: linear-gradient(to bottom, #42A5E1, #247BC1);
+}
+.button-background {
+  background: linear-gradient(to bottom, rgba(66, 165, 225, 1), rgba(36, 123, 193, 1)) #000000;
+  box-shadow: 0 2px 0 #B2B0A8, inset 0 -2px 0 #1F6DB7;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  border-radius: 5px;
+}
+.button-background:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(to bottom, rgba(66, 165, 225, .8), rgba(36, 123, 193, .8)) #000000;
+  transition: opacity 0.5s ease-out;
+  opacity: 0;
+}
+.cta-button:hover .button-background:after {
+  opacity: .8;
 }
 .header {
   max-width: 810px;
@@ -587,8 +612,8 @@ html {
   0%,
   85.714285716%,
   100% {
-    top: 17.5%;
-    left: 17.5%;
+    top: 20%;
+    left: 20%;
   }
   14.285714286% {
     top: 17.5%;
