@@ -395,12 +395,6 @@
         color: #FFFFFF;
         opacity: .4;
       }
-      .info-icon.activate .receiver {
-        animation-name: ring, nothing, ring, nothing, ring;
-        animation-delay: 0s, 1.4s, 2.4s, 3.8s, 4.8s;
-        animation-duration: 0.07s, 1s, 0.07s, 1s, 0.07s;
-        animation-iteration-count: 20, 1, 20, 1, 20;
-      }
       .envelope {
         position: relative;
         height: 119px;
@@ -416,12 +410,6 @@
       }
       .step-1 .info-icon {
         margin-left: -12px;
-      }
-      .info-icon.activate .envelope .photo {
-        animation-name: photo;
-        animation-duration: 5s;
-        animation-iteration-count: infinite;
-        transform-origin: center center 0px;
       }
       .envelope .photo {
         background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/photo.svg");
@@ -456,6 +444,10 @@
         left: 24px;
         top: 12px;
         position: absolute;
+        animation-name: ring;
+        animation-delay: 0s;
+        animation-duration:  2s;
+        animation-iteration-count: infinite;
       }
       .search {
         position: relative;
@@ -998,88 +990,74 @@
           left: 17.5%;
         }
       }
-      @-webkit-keyframes ring {
-        0% {
-          transform: rotate(-2deg);
-        },
-        50% {
-          transform: rotate(2deg);
-        },
-        100% {
-          transform: rotate(-2deg);
-        }
-      }
-
-      @-webkit-keyframes nothing {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(0deg);
-        }
-      }
-      @-o-keyframes ring {
-        0% {
-          transform: rotate(-2deg);
-        },
-        50% {
-          transform: rotate(2deg);
-        },
-        100% {
-          transform: rotate(-2deg);
-        }
-      }
-
-      @-o-keyframes nothing {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(0deg);
-        }
-      }
-
-      @-moz-keyframes ring {
-        0% {
-          transform: rotate(-2deg);
-        },
-        50% {
-          transform: rotate(2deg);
-        },
-        100% {
-          transform: rotate(-2deg);
-        }
-      }
-
-      @-moz-keyframes nothing {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(0deg);
-        }
-      }
       @keyframes ring {
         0% {
-          transform: rotate(-2deg);
-        },
+            transform: rotate(-4deg);
+        }
+        2.5%{
+            transform: rotate(4deg);
+        }
+        5% {
+            transform: rotate(-4deg);
+        }
+        7.5%{
+            transform: rotate(4deg);
+        }
+        10% {
+            transform: rotate(-4deg);
+        }
+        12.5%{
+            transform: rotate(4deg);
+        }
+        15% {
+            transform: rotate(-4deg);
+        }
+        17.5%{
+            transform: rotate(4deg);
+        }
+        20% {
+            transform: rotate(-4deg);
+        }
+        22.5%{
+            transform: rotate(4deg);
+        }
+        25% {
+            transform: rotate(-4deg);
+        }
+        27.5%{
+            transform: rotate(4deg);
+        }
+        30% {
+            transform: rotate(-4deg);
+        }
+        32.5%{
+            transform: rotate(4deg);
+        }
+        35% {
+            transform: rotate(-4deg);
+        }
+        37.5%{
+            transform: rotate(4deg);
+        }
+        40% {
+            transform: rotate(-4deg);
+        }
+        42.5%{
+            transform: rotate(4deg);
+        }
+        45% {
+            transform: rotate(-4deg);
+        }
+        47.5%{
+            transform: rotate(4deg);
+        }
         50% {
-          transform: rotate(2deg);
-        },
-        100% {
-          transform: rotate(-2deg);
+            transform: rotate(-4deg);
+        }
+        51.25% {
+            transform: rotate(0deg);
         }
       }
-
-      @keyframes nothing {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(0deg);
-        }
-      }
-
       @keyframes photo {
         0% {
             transform: translateY(0px);
@@ -1168,7 +1146,6 @@
             answered.classList.remove("fadein");
             itemContainer.classList.remove("expand");
             answerContainer.classList.remove("status-" + type);
-            infoIcon.classList.remove("activate");
           });
           element.addEventListener("click", function(e) {
             if (window.analytics) {
@@ -1195,7 +1172,6 @@
               cta2.classList.remove("hidden");
             }
             itemContainer.classList.add("expand");
-            infoIcon.classList.add("activate");
             answered.classList.add("fadein");
             answerContainer.classList.add("status-" + type);
             setTimeout(function() {
