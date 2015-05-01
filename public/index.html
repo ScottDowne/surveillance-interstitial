@@ -486,6 +486,23 @@
       .arrow-container {
         text-align: center;
         margin-bottom: 5px;
+        position: 
+      }
+      .arrow-image {
+        animation-name: bounce;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+      }
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-8px);
+        }
+        60% {
+          transform: translateY(-4px);
+        }
       }
       .your-answer-container.no-answer,
       .your-answer-container.yes-answer {
@@ -1353,7 +1370,7 @@
             </div>
             <div class="info-text">Today, the U.S Government monitors <span class="bold">who</span> you're calling, for <span class="bold">how long</span>, and at <span class="bold">what times</span> - even if you're not under suspicion of any wrongdoing. Currently, sections of the Patriot Act allow for the bulk collection of telephone records of millions of innocent people.</div>
           </div>
-          <div class="arrow-container"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-down.svg"></div>
+          <div class="arrow-container"><img class="arrow-image"src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-down.svg"></div>
         </div>
       </div>
       <div class="item-container step-2">
