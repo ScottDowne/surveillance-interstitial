@@ -1148,7 +1148,7 @@
       document.addEventListener( "DOMContentLoaded", function() {
         var questionYesButtons = document.querySelectorAll(".yes-option");
         var questionNoButtons = document.querySelectorAll(".no-option");
-        var answers = ["yes", "yes", "yes"];
+        var answers = ["", "", ""];
 
         function createClickEvent(element, type, index) {
           var itemContainer = document.querySelector(".step-" + index);
@@ -1174,19 +1174,22 @@
               });
             }
 
+            var noFound = 0;
             var yesFound = 0;
             answers[index-1] = type;
             for (var i = 0; i < answers.length; i++) {
-              if (answers[i] === "yes") {
+              if (answers[i] === "no") {
+                noFound++;
+              } else if (answers[i] === "yes") {
                 yesFound++;
               }
             }
-            if (yesFound >= 2) {
-              cta1.classList.add("hidden");
-              cta2.classList.remove("hidden");
-            } else {
+            if (noFound >= yesFound) {
               cta1.classList.remove("hidden");
               cta2.classList.add("hidden");
+            } else {
+              cta1.classList.add("hidden");
+              cta2.classList.remove("hidden");
             }
             itemContainer.classList.add("expand");
             infoIcon.classList.add("activate");
