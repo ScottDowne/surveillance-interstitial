@@ -488,10 +488,10 @@
         margin-bottom: 5px;
         position: 
       }
-      .arrow-image {
+      .item-container.bounce .arrow-image {
         animation-name: bounce;
         animation-duration: 2s;
-        animation-iteration-count: infinite;
+        animation-iteration-count: 2;
       }
       @keyframes bounce {
         0%, 20%, 50%, 80%, 100% {
@@ -1162,6 +1162,7 @@
           cancelButton.addEventListener("click", function() {
             answered.classList.remove("fadein");
             itemContainer.classList.remove("expand");
+            itemContainer.classList.remove("bounce");
             answerContainer.classList.remove("status-" + type);
           });
           element.addEventListener("click", function(e) {
@@ -1189,6 +1190,11 @@
               cta2.classList.remove("hidden");
             }
             itemContainer.classList.add("expand");
+            var oldBounce = document.querySelector(".bounce");
+            if (oldBounce) {
+              oldBounce.classList.remove("bounce");
+            }
+            itemContainer.classList.add("bounce");
             answered.classList.add("fadein");
             answerContainer.classList.add("status-" + type);
             setTimeout(function() {
