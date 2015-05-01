@@ -11,12 +11,1055 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
-    <script src="../node_modules/webmaker-analytics/analytics.js"></script>
+    <script>
+      (function(global, factory) {
+        if (typeof define === 'function' && define.amd) {
+          define(factory);
+        }
+        else if (typeof module === "object" && module && typeof module.exports === "object") {
+          module.exports = factory();
+        } else {
+          global.analytics = factory();
+        }
+      }(this, function() {
+
+        // Make sure _gaq is on the global so we don't die trying to access it
+        if(!this._gaq) {
+          this._gaq = [];
+        }
+
+        // Make sure optimizely is on the global so we don't die trying to access it
+        if(!this.optimizely) {
+          this.optimizely = [];
+        }
+
+        // Use hostname for GA Category
+        var _category = location.hostname,
+            _redacted = "REDACTED (Potential Email Address)";
+
+        /**
+         * To Title Case 2.1 - http://individed.com/code/to-title-case/
+         * Copyright 2008-2013 David Gouch. Licensed under the MIT License.
+         * https://github.com/gouch/to-title-case
+         */
+        function toTitleCase(s){
+          var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;
+          s = trim(s);
+
+          return s.replace(/[A-Za-z0-9\u00C0-\u00FF]+[^\s-]*/g, function(match, index, title){
+            if (index > 0 &&
+                index + match.length !== title.length &&
+                match.search(smallWords) > -1 &&
+                title.charAt(index - 2) !== ":" &&
+                (title.charAt(index + match.length) !== '-' || title.charAt(index - 1) === '-') &&
+                title.charAt(index - 1).search(/[^\s-]/) < 0) {
+              return match.toLowerCase();
+            }
+
+            if (match.substr(1).search(/[A-Z]|\../) > -1) {
+              return match;
+            }
+
+            return match.charAt(0).toUpperCase() + match.substr(1);
+          });
+        }
+
+        // GA strings need to have leading/trailing whitespace trimmed, and not all
+        // browsers have String.prototoype.trim().
+        function trim(s) {
+          return s.replace(/^\s+|\s+$/g, '');
+        }
+
+        // See if s could be an email address. We don't want to send personal data like email.
+        function mightBeEmail(s) {
+          // There's no point trying to validate rfc822 fully, just look for ...@...
+          return (/[^@]+@[^@]+/).test(s);
+        }
+
+        function warn(msg) {
+          console.warn("[analytics] " + msg);
+        }
+
+        // Support both types of Google Analytics Event Tracking, see:
+        // ga.js - https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
+        // analytics.js - https://developers.google.com/analytics/devguides/collection/analyticsjs/events
+        function _gaEvent(options) {
+          // If the new analytics.js API is present, fire this event using ga().
+          if(typeof ga === "function") {
+            // Transform the argument array to match the expected call signature for ga(), see:
+            // https://developers.google.com/analytics/devguides/collection/analyticsjs/events#overview
+            var fieldObject = {
+              'hitType': 'event',
+              'eventCategory': _category,
+              'eventAction': options.action
+            };
+            if(options.label) {
+              fieldObject['eventLabel'] = options.label;
+            }
+            if(options.value || options.value === 0) {
+              fieldObject['eventValue'] = options.value;
+            }
+            if(options.nonInteraction === true) {
+              fieldObject['nonInteraction'] = 1;
+            }
+            ga('send', fieldObject);
+          }
+
+          // Also support the old API. Google suggests firing data at both to be the right thing.
+          var eventArgs = ['_trackEvent', _category, options.action];
+          if(options.label) {
+            eventArgs[3] = options.label;
+          }
+          if(options.value || options.value === 0) {
+            eventArgs[4] = options.value;
+          }
+          if(options.nonInteraction === true) {
+            eventArgs[5] = true;
+          }
+          _gaq.push(eventArgs);
+        }
+
+        function event(action, options) {
+          options = options || {};
+          var eventOptions = {},
+              label = options.label,
+              value = options.value,
+              // Support both forms to deal with typos between the 2 APIs
+              nonInteraction = options.noninteraction || options.nonInteraction;
+
+          if(!action) {
+            warn("Expected `action` arg.");
+            return;
+          }
+          if(mightBeEmail(action)) {
+            warn("`action` arg looks like an email address, redacting.");
+            action = _redacted;
+          }
+          eventOptions.action = toTitleCase(action);
+
+          // label: An optional string to provide additional dimensions to the event data.
+          if(label) {
+            if(typeof label !== "string") {
+              warn("Expected `label` arg to be a String.");
+            } else {
+              if(mightBeEmail(label)) {
+                warn("`label` arg looks like an email address, redacting.");
+                label = _redacted;
+              }
+              eventOptions.label = trim(label);
+            }
+          }
+
+          // value: An optional integer that you can use to provide numerical data about
+          // the user event.
+          if(value || value === 0) {
+            if(typeof value !== "number") {
+              warn("Expected `value` arg to be a Number.");
+            } else {
+              // Force value to int
+              eventOptions.value = value|0;
+            }
+          }
+
+          // noninteraction: An optional boolean that when set to true, indicates that
+          // the event hit will not be used in bounce-rate calculation.
+          if(nonInteraction) {
+            if(typeof nonInteraction !== "boolean") {
+              warn("Expected `noninteraction` arg to be a Boolean.");
+            } else {
+              eventOptions.nonInteraction = nonInteraction === true;
+            }
+          }
+
+          _gaEvent(eventOptions);
+        }
+
+        // Use a consistent prefix and check if arg starts with a forward slash
+        function prefixVirtualPageview(s) {
+          // Bail if s is already prefixed.
+          if(/^\/virtual\//.test(s)) {
+            return s;
+          }
+          // Make sure s has a leading / then add prefix and return
+          s = s.replace(/^[/]?/, '/');
+          return '/virtual' + s;
+        }
+
+        // Support both types of Google Analytics Tracking, see:
+        // ga.js - https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._trackPageview
+        // analytics.js - https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
+        function _gaVirtualPageView(options) {
+          // If the new analytics.js API is present, fire this event using ga().
+          if(typeof ga === "function") {
+            // Transform the argument array to match the expected call signature for ga():
+            // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference
+            var fieldObject = {
+              'hitType': 'pageview',
+              'page': options.virtualPagePath
+            };
+            ga('send', fieldObject);
+          }
+
+          // Also support the old API. Google suggests firing data at both to be the right thing.
+          var eventArgs = ['_trackPageview', options.virtualPagePath];
+          _gaq.push(eventArgs);
+        }
+
+        function virtualPageview(virtualPagePath) {
+          if(!virtualPagePath) {
+            warn("Expected `virtualPagePath` arg.");
+            return;
+          }
+          virtualPagePath = trim(virtualPagePath);
+
+          var eventOptions = {};
+          eventOptions.virtualPagePath = prefixVirtualPageview(virtualPagePath);
+
+          _gaVirtualPageView(eventOptions);
+        }
+
+
+        function _optimizely(options) {
+          var eventArgs = ['trackEvent', options.action];
+
+          // check if we are giving this conversion financial value
+          if (options.revenue) {
+            var args = {
+              revenue: options.revenue
+            };
+            eventArgs[2] = args;
+          }
+
+          optimizely.push(eventArgs);
+        }
+
+        function conversionGoal(action, options) {
+          options = options || {};
+          var eventOptions = {},
+              valueInCents = options.valueInCents;
+
+          if(!action) {
+            warn("Expected `action` arg.");
+            return;
+          }
+          eventOptions.action = trim(action);
+
+          // valueInCents: An optional integer to track revenue - for example from fundraising appeal.
+          if(valueInCents) {
+            if((typeof valueInCents === 'number') && (valueInCents % 1 === 0)) {
+              eventOptions.revenue = valueInCents;
+            } else {
+              warn("Expected `valueInCents` arg to be an integer.");
+            }
+          }
+
+          _optimizely(eventOptions);
+        }
+
+        return {
+          event: event,
+          virtualPageview: virtualPageview,
+          conversionGoal: conversionGoal
+        };
+
+      }));
+    </script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+        background-color: #D7D3C8;
+        color: #4D4E53;
+        font-family: 'Open Sans', sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .main {
+        max-width: 810px;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .vote-box {
+        margin: 0 auto;
+        width: 135px;
+        height: 3px;
+        background-color: #4D4E53;
+        border-top: 1px solid #979590;
+      }
+      .item-container {
+        text-align: left;
+        overflow: hidden;
+        margin-bottom: 15px;
+      }
+      .bold {
+        font-weight: 600;
+      }
+      .item-container.expand .number {
+        color: #A7A49E;
+      }
+      .item-container.expand .question-container {
+        background-color: #EAE5DA;
+      }
+      .petition-link-container {
+        float: right;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: 14px;
+      }
+      .petition-link {
+        color: #0095DD;
+        text-decoration: none;
+      }
+      .petition-link:hover {
+        color: #00539F;
+      }
+      .number {
+        transition: color .3s;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        color: #4D4E53;
+        font-weight: 600;
+        justify-content: center;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        border: 1px solid #D7D3C8;
+        float: left;
+        margin: 0 0 0 30px;
+        font-size: 36px;
+      }
+      html {
+        overflow-y: scroll;
+      }
+      .question-container {
+        transition: background-color .3s;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+      }
+      .answer-container {
+        position: relative;
+        overflow: hidden;
+      }
+      .answer-container,
+      .question-container {
+        width: 50%;
+        height: 100%;
+        background-color: #FFFFFF;
+        float: left;
+      }
+      .question {
+        font-size: 20px;
+        margin: 0 30px;
+      }
+      .info-container {
+        max-height: 0;
+        transition: max-height .3s;
+      }
+      .info-container.expand {
+        max-height: 200px;
+      }
+      .info-wrapper {
+        padding: 40px 50px 10px;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+      }
+      .info-icon {
+        width: 120px;
+        height: 100px;
+        justify-content: center;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        margin-right: 30px;
+      }
+      .your-answer {
+        text-transform: uppercase;
+        font-size: 14px;
+        color: #D7D3C8;
+      }
+      .circle {
+        background-color: #D7D3C8;
+        height: 200px;
+        border-radius: 50%;
+        position: absolute;
+        z-index: 1;
+        width: 210px;
+        top: -165px;
+        left: 50%;
+        margin-left: -105px;
+      }
+      .your-answer-container {
+        border: 1px solid #D7D3C8;
+        font-size: 28px;
+        font-weight: 300;
+        justify-content: center;
+      }
+      .arrow-container {
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      .your-answer-container.no-answer,
+      .your-answer-container.yes-answer {
+        position: absolute;
+        top: 30px;
+        bottom: 30px;
+        width: 123px;
+        transition: right .3s;
+        opacity: 0;
+        z-index: -1;
+      }
+      .status-no .your-answer-container.no-answer,
+      .status-yes .your-answer-container.yes-answer {
+        right: 40px;
+        opacity: 1;
+        z-index: 0;
+      }
+      .yes-answer {
+        right: 203px;
+      }
+      .no-answer {
+        right: 40px;
+      }
+      .your-answer {
+        width: 50%;
+        float: left;
+        height: 100%;
+      }
+      .your-answer-container,
+      .your-answer {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .answered {
+        padding: 30px 70px 30px 65px;
+        color: #FFFFFF;
+        opacity: 0;
+        z-index: -1;
+      }
+      .unanswered {
+        background: linear-gradient(to right, #414142 50%, #2E2E2E 50%);
+      }
+      .answered,
+      .unanswered {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: opacity .3s;
+      }
+      .fadein {
+        opacity: 1;
+        z-index: 0;
+      }
+      .status-yes .yes-option,
+      .status-yes .no-option,
+      .status-no .yes-option,
+      .status-no .no-option {
+        display: none;
+      }
+      .status-yes .answered {
+        background-color: #6CB74C;
+      }
+      .status-no .answered {
+        background-color: #BA3B33;
+      }
+      .eye-spacing {
+        float: left;
+        height: 1px;
+        width: 20%;
+      }
+      .status-yes .yes-answer,
+      .status-no .no-answer {
+        display: flex;
+      }
+      .hidden {
+        display: none;
+      }
+      .no-option-border {
+        border-color: #2E2E2E;
+      }
+      .yes-option-border {
+        border-color: #414142;
+      }
+      .no-option-border,
+      .yes-option-border {
+        justify-content: center;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        transition: border-color .5s;
+        border-style: solid;
+        border-width: 1px;
+      }
+      .yes-no-option-container {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+      }
+      .or-option {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        color: #757575;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 14px;
+      }
+      .cancel-button {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .no-option-border:hover,
+      .yes-option-border:hover,
+      .no-option-border:active,
+      .yes-option-border:active {
+        border-color: #D7D3C8;
+      }
+      .no-option,
+      .yes-option {
+        width: 50%;
+        height: 100%;
+        float: left;
+        color: #FFFFFF;
+        font-size: 27px;
+        cursor: pointer;
+        padding: 30px 40px;
+        font-weight: 300;
+      }
+      .step-container {
+        position: relative;
+        overflow: hidden;
+        height: 150px;
+      }
+      .title {
+        padding: 35px 0;
+        font-weight: 300;
+        font-size: 45px;
+        overflow: hidden;
+      }
+      .title-1 {
+        text-align: right;
+      }
+      .title-2 {
+        text-align: left;
+      }
+      .title-1,
+      .title-2 {
+        float: left;
+        width: 40%;
+      }
+      .main {
+        margin-bottom: 185px;
+      }
+      .final-step-text {
+        padding: 40px;
+        font-size: 37px;
+        font-weight: 300;
+      }
+      .cta-button {
+        position: relative;
+        font-family: inherit;
+        font-weight: 300;
+        font-weight: light;
+        cursor: pointer;
+        padding: 15px 60px 20px;
+        border-radius: 5px;
+        color: #FFFFFF;
+        font-size: 30px;
+        text-decoration: none;
+      }
+      .button-background {
+        background: linear-gradient(to bottom, rgba(66, 165, 225, 1), rgba(36, 123, 193, 1)) #000000;
+        box-shadow: 0 2px 0 #B2B0A8, inset 0 -2px 0 #1F6DB7;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        border-radius: 5px;
+      }
+      .button-background:after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        background: linear-gradient(to bottom, rgba(66, 165, 225, .8), rgba(36, 123, 193, .8)) #000000;
+        transition: opacity 0.5s ease-out;
+        opacity: 0;
+      }
+      .cta-button:hover .button-background:after {
+        opacity: .8;
+      }
+      .header {
+        max-width: 810px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 30px;
+      }
+      @media (min-width: 1200px) {
+        .header {
+          max-width: 1200px;
+        }
+      }
+
+      .front {
+        height: 100%;
+        width: 100%;
+      }
+
+      .privacy-eye {
+        height: 55px;
+        width: 55px;
+        position: absolute;
+        top: 0;
+        padding: 2px;
+        top: -85px;
+        left: -25px;
+      }
+
+      .eye-container {
+        height: 0;
+        width: 0;
+        flex-shrink: 0;
+        z-index: 2;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+      }
+
+      .eyelid {
+        height: 100%;
+        margin: 0 auto;
+        position: relative;
+        width: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .eye-image {
+        margin-top: -150px;
+        margin-left: -60px;
+      }
+
+      .eyelid::before,
+      .eyelid::after {
+        background: #4D4E53;
+        content: '';
+        display: block;
+        height: 50%;
+        position: absolute;
+        width: 100%;
+        -webkit-animation: real-eyelids 7s infinite;
+        -o-animation: real-eyelids 7s infinite;
+        -moz-animation: real-eyelids 7s infinite;
+        animation: real-eyelids 7s infinite;
+      }
+
+      .eyelid::before {
+        top: 0;
+        z-index: 100;
+      }
+
+      .eyelid::after {
+        bottom: 0;
+      }
+
+      .sclera {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .iris {
+        border: 2px solid #4D4E53;
+        border-radius: 50%;
+        height: 60%;
+        width: 60%;
+        padding: 7.5%;
+        position: relative;
+        top: 19.5%;
+        left: 20.5%;
+      }
+
+      .privacy-eye.wander .iris {
+        -webkit-animation: searching-eye 7s infinite;
+        -o-animation: searching-eye 7s infinite;
+        -moz-animation: searching-eye 7s infinite;
+        animation: searching-eye 7s infinite;
+      }
+
+      .privacy-eye.focus .iris {
+        padding: 21%;
+      }
+
+      .privacy-eye.smooth .iris {
+        transition: padding .3s, transform .2s;
+      }
+
+      .privacy-eye .iris {
+        transition: padding .3s;
+      }
+
+      .pupil {
+        background: #4D4E53;
+        border-radius: 50%;
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+
+      @-webkit-keyframes real-eyelids {
+        0%,
+        90%,
+        100% {
+          height: 0;
+        }
+        95% {
+          height: 60%;
+        }
+      }
+
+      @-o-keyframes real-eyelids {
+        0%,
+        90%,
+        100% {
+          height: 0;
+        }
+        95% {
+          height: 60%;
+        }
+      }
+
+      @-moz-keyframes real-eyelids {
+        0%,
+        90%,
+        100% {
+          height: 0;
+        }
+        95% {
+          height: 60%;
+        }
+      }
+
+      @keyframes real-eyelids {
+        0%,
+        90%,
+        100% {
+          height: 0;
+        }
+        95% {
+          height: 60%;
+        }
+      }
+
+      @-webkit-keyframes searching-eye {
+        0%,
+        85.714285716%,
+        100% {
+          top: 17.5%;
+          left: 17.5%;
+        }
+        14.285714286% {
+          top: 17.5%;
+          left: 8%;
+        }
+        28.571428572% {
+          top: 30%;
+          left: 8%;
+        }
+        42.857142858% {
+          top: 30%;
+          left: 30%;
+        }
+        57.142857144% {
+          top: 8%;
+          left: 30%;
+        }
+        71.42857143% {
+          top: 8%;
+          left: 8%;
+        }
+        85.7142857% {
+          top: 0;
+          left: 17.5%;
+        }
+      }
+
+      @-o-keyframes searching-eye {
+        0%,
+        85.714285716%,
+        100% {
+          top: 17.5%;
+          left: 17.5%;
+        }
+        14.285714286% {
+          top: 17.5%;
+          left: 8%;
+        }
+        28.571428572% {
+          top: 30%;
+          left: 8%;
+        }
+        42.857142858% {
+          top: 30%;
+          left: 30%;
+        }
+        57.142857144% {
+          top: 8%;
+          left: 30%;
+        }
+        71.42857143% {
+          top: 8%;
+          left: 8%;
+        }
+        85.7142857% {
+          top: 0;
+          left: 17.5%;
+        }
+      }
+
+      @-moz-keyframes searching-eye {
+        0%,
+        85.714285716%,
+        100% {
+          top: 17.5%;
+          left: 17.5%;
+        }
+        14.285714286% {
+          top: 17.5%;
+          left: 8%;
+        }
+        28.571428572% {
+          top: 30%;
+          left: 8%;
+        }
+        42.857142858% {
+          top: 30%;
+          left: 30%;
+        }
+        57.142857144% {
+          top: 8%;
+          left: 30%;
+        }
+        71.42857143% {
+          top: 8%;
+          left: 8%;
+        }
+        85.7142857% {
+          top: 0;
+          left: 17.5%;
+        }
+      }
+
+      @keyframes searching-eye {
+        0%,
+        85.714285716%,
+        100% {
+          top: 20%;
+          left: 20%;
+        }
+        14.285714286% {
+          top: 17.5%;
+          left: 8%;
+        }
+        28.571428572% {
+          top: 30%;
+          left: 8%;
+        }
+        42.857142858% {
+          top: 30%;
+          left: 30%;
+        }
+        57.142857144% {
+          top: 8%;
+          left: 30%;
+        }
+        71.42857143% {
+          top: 8%;
+          left: 8%;
+        }
+        85.7142857% {
+          top: 0;
+          left: 17.5%;
+        }
+      }
+    </style>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="main.js"></script>
+    <script>
+      document.addEventListener( "DOMContentLoaded", function() {
+        var questionYesButtons = document.querySelectorAll(".yes-option");
+        var questionNoButtons = document.querySelectorAll(".no-option");
+        var answers = ["yes", "yes", "yes"];
+
+        function createClickEvent(element, type, index) {
+          var itemContainer = document.querySelector(".step-" + index);
+          var cancelButton = itemContainer.querySelector(".cancel-button");
+          var unanswered = itemContainer.querySelector(".unanswered");
+          var answerContainer = itemContainer.querySelector(".answer-container");
+          var answered = answerContainer.querySelector(".answered");
+          var infoContainer = itemContainer.querySelector(".info-container");
+          var finalStep = document.querySelector(".final-step");
+          var cta1 = finalStep.querySelector(".cta-1");
+          var cta2 = finalStep.querySelector(".cta-2");
+          cancelButton.addEventListener("click", function() {
+            answered.classList.remove("fadein");
+            itemContainer.classList.remove("expand");
+            answerContainer.classList.remove("status-" + type);
+          });
+          element.addEventListener("click", function(e) {
+            if (window.analytics) {
+              analytics.event("Answered Question " + index, {
+                label: type
+              });
+            }
+
+            var yesFound = 0;
+            answers[index-1] = type;
+            for (var i = 0; i < answers.length; i++) {
+              if (answers[i] === "yes") {
+                yesFound++;
+              }
+            }
+            if (yesFound >= 2) {
+              cta1.classList.add("hidden");
+              cta2.classList.remove("hidden");
+            } else {
+              cta1.classList.remove("hidden");
+              cta2.classList.add("hidden");
+            }
+            itemContainer.classList.add("expand");
+            answered.classList.add("fadein");
+            answerContainer.classList.add("status-" + type);
+            setTimeout(function() {
+              infoContainer.classList.add("expand");
+              if (index === 3) {
+                finalStep.classList.remove("hidden");
+              }
+              setTimeout(function() {
+                $('html, body').animate({
+                  scrollTop: itemContainer.offsetTop + itemContainer.offsetHeight
+                });
+              }, 300);
+            }, 300);
+          });
+        }
+
+        for (var i = 0; i < questionYesButtons.length; i++) {
+          createClickEvent(questionYesButtons[i], "yes", i+1);
+        }
+
+        for (var i = 0; i < questionNoButtons.length; i++) {
+          createClickEvent(questionNoButtons[i], "no", i+1);
+        }
+        $(window).on('beforeunload', function() {
+          $('html, body').scrollTop(0);
+        });
+
+        var
+        rectangle,
+          radius = 7.5,
+          iris = document.querySelector('.iris'),
+          center;
+
+        function measureThings() {
+          rectangle = iris.getBoundingClientRect();
+          center = {
+            x: (rectangle.width / 2) + (rectangle.left),
+            y: (rectangle.height / 2) + (rectangle.top)
+          };
+        }
+
+        function doMaths(x, y, radius) {
+          var
+          pythagoras = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)),
+            coordinates = {
+              x: x,
+              y: y
+            };
+          if (pythagoras !== 0) {
+            coordinates.x = x * radius / pythagoras;
+            coordinates.y = y * radius / pythagoras;
+          }
+          return coordinates;
+        }
+
+        function translatePupil(coords) {
+          var transform = 'translate(' + Math.round(coords.x) + 'px, ' + Math.round(coords.y) + 'px)';
+          iris.style.transform = transform;
+        }
+
+        var mousemoveTime = Date.now();
+        var eye = document.querySelector('.privacy-eye');
+
+        function checkMovement() {
+          var nowTime = Date.now();
+          var diffTime = (nowTime - mousemoveTime) / 1000;
+          if (diffTime > 3 && !eye.classList.contains('focus') && !eye.classList.contains('wander')) {
+            iris.style.transform = 'translate(0, 0)';
+            eye.classList.add('smooth');
+            eye.classList.add('wander');
+          }
+
+          setTimeout(checkMovement, 1000);
+        }
+
+        checkMovement();
+
+        function onMouseMove(e) {
+          var pageY = e.pageY - window.pageYOffset;
+          mousemoveTime = Date.now();
+          eye.classList.remove('wander');
+          eye.classList.remove('smooth');
+          measureThings();
+          translatePupil(doMaths(e.pageX - center.x, pageY - center.y, radius));
+        }
+
+        function onMouseEnter() {
+          eye.classList.add('smooth');
+          eye.classList.add('focus');
+          iris.style.transform = 'translate(0, 0)';
+          window.removeEventListener("mousemove", onMouseMove);
+        }
+
+        function onMouseLeave() {
+          eye.classList.remove('focus');
+          eye.classList.remove('smooth');
+          window.addEventListener("mousemove", onMouseMove);
+        }
+
+        if (iris) {
+          eye.addEventListener("mouseenter", onMouseEnter);
+          eye.addEventListener("mouseleave", onMouseLeave);
+          window.addEventListener("mousemove", onMouseMove);
+        }
+      });
+    </script>
   </head>
   <body>
     <div class="header">
