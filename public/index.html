@@ -381,7 +381,7 @@
         align-items: center;
       }
       .info-icon {
-        width: 120px;
+        max-width: 132px;
         height: 100px;
         justify-content: center;
         display: flex;
@@ -394,6 +394,82 @@
         font-size: 14px;
         color: #FFFFFF;
         opacity: .4;
+      }
+      .info-icon.activate .receiver {
+        animation-name: ring, nothing, ring, nothing, ring;
+        animation-delay: 0s, 1.4s, 2.4s, 3.8s, 4.8s;
+        animation-duration: 0.07s, 1s, 0.07s, 1s, 0.07s;
+        animation-iteration-count: 20, 1, 20, 1, 20;
+      }
+      .envelope {
+        position: relative;
+        height: 119px;
+        width: 132px;
+      }
+      .envelope .envelope-back {
+        position: absolute;
+        top: 26px;
+        left: 0px;
+        height: 50px;
+        width: 100%;
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/envelope-back.svg");
+      }
+      .info-icon.activate .envelope .photo {
+        animation-name: photo;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        transform-origin: center center 0px;
+      }
+      .envelope .photo {
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/photo.svg");
+        height: 60px;
+        width: 60px;
+        left: 36px;
+        top: 28px;
+        position: absolute;
+        animation-name: photo;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        transform-origin: center center 0px;
+      }
+      .envelope .envelope-front {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-mail-new.svg");
+      }
+      .phone {
+        position: relative;
+        height: 117px;
+        width: 150px;
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-phone-new.svg");
+      }
+      .receiver {
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/phone-receiver.svg");
+        height: 50px;
+        width: 110px;
+        left: 24px;
+        top: 12px;
+        position: absolute;
+      }
+      .search {
+        position: relative;
+        height: 112px;
+        width: 144px;
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-search-new.svg");
+      }
+      .search .magnifying-glass {
+        background: url("https://sendto.mozilla.org/page/-/surveillance-interstitial/magnifying-glass.svg") repeat scroll 0% 0% transparent;
+        height: 40px;
+        width: 40px;
+        left: 44px;
+        top: 28px;
+        position: absolute;
+        animation-name: search;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
       }
       .circle {
         background-color: #D7D3C8;
@@ -919,6 +995,152 @@
           left: 17.5%;
         }
       }
+      @-webkit-keyframes ring {
+        0% {
+          transform: rotate(-2deg);
+        },
+        50% {
+          transform: rotate(2deg);
+        },
+        100% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      @-webkit-keyframes nothing {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+      @-o-keyframes ring {
+        0% {
+          transform: rotate(-2deg);
+        },
+        50% {
+          transform: rotate(2deg);
+        },
+        100% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      @-o-keyframes nothing {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      @-moz-keyframes ring {
+        0% {
+          transform: rotate(-2deg);
+        },
+        50% {
+          transform: rotate(2deg);
+        },
+        100% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      @-moz-keyframes nothing {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+      @keyframes ring {
+        0% {
+          transform: rotate(-2deg);
+        },
+        50% {
+          transform: rotate(2deg);
+        },
+        100% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      @keyframes nothing {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      @keyframes photo {
+        0% {
+            transform: translateY(0px);
+        }
+        20% {
+            transform: translateY(-28px);
+        }
+        30% {
+            transform: translateY(-28px);
+        }
+        31% {
+            transform: translateY(-28px) scale(1);
+        }
+        36% {
+            transform: translateY(-28px) scale(1.1);
+        }
+        41% {
+            transform: translateY(-28px) scale(1);
+        }
+        46% {
+            transform: translateY(-28px) scale(1.1);
+        }
+        51% {
+            transform: translateY(-28px) scale(1);
+        }
+        81% {
+            transform: translateY(0px) scale(1);
+        }
+        100% {
+            transform: translateY(0px);
+        }
+      }
+      @keyframes search {
+        0% {
+            transform: scale(1);
+        }
+        10% {
+            transform: scale(1.4);
+        }
+        30% {
+            transform: scale(1.4);
+        }
+        40% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1);
+        }
+        60% {
+            transform: translateX(-10px);
+        }
+        65% {
+            transform: translateX(-10px);
+        }
+        80% {
+            transform: translateX(10px);
+        }
+        85% {
+            transform: translateX(10px);
+        }
+        95% {
+            transform: translateX(0px);
+        }
+      }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -938,10 +1160,12 @@
           var finalStep = document.querySelector(".final-step");
           var cta1 = finalStep.querySelector(".cta-1");
           var cta2 = finalStep.querySelector(".cta-2");
+          var infoIcon = itemContainer.querySelector(".info-icon");
           cancelButton.addEventListener("click", function() {
             answered.classList.remove("fadein");
             itemContainer.classList.remove("expand");
             answerContainer.classList.remove("status-" + type);
+            infoIcon.classList.remove("activate");
           });
           element.addEventListener("click", function(e) {
             if (window.analytics) {
@@ -965,6 +1189,7 @@
               cta2.classList.add("hidden");
             }
             itemContainer.classList.add("expand");
+            infoIcon.classList.add("activate");
             answered.classList.add("fadein");
             answerContainer.classList.add("status-" + type);
             setTimeout(function() {
@@ -1139,7 +1364,11 @@
         </div>
         <div class="info-container">
           <div class="info-wrapper">
-            <div class="info-icon"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-phone.svg"></div>
+            <div class="info-icon">
+              <div class="phone">
+                <div class="receiver"></div>
+              </div>
+            </div>
             <div class="info-text">Today, the U.S Government monitors <span class="bold">who</span> you're calling, for <span class="bold">how long</span>, and at <span class="bold">what times</span> - even if you're not under suspicion of any wrongdoing. Currently, sections of the Patriot Act allow for the bulk collection of telephone records of millions of innocent people.</div>
           </div>
           <div class="arrow-container"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-down.svg"></div>
@@ -1177,7 +1406,13 @@
         </div>
         <div class="info-container">
           <div class="info-wrapper">
-            <div class="info-icon"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-mail.svg"></div>
+            <div class="info-icon">
+              <div class="envelope">
+                <div class="envelope-back"></div>
+                <div class="photo"></div>
+                <div class="envelope-front"></div>
+              </div>
+            </div>
             <div class="info-text">Right now, the Patriot Act provision authorizing bulk collection of phone call data can be used to acquire &ldquo;<span class="bold">any tangible thing</span>&rdquo;, which could allow the mass surveillance of your emails. Because of a lack of transparency, we don't know how much data they are collecting and on how many people.</div>
           </div>
           <div class="arrow-container"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-down.svg"></div>
@@ -1215,7 +1450,11 @@
         </div>
         <div class="info-container">
           <div class="info-wrapper">
-            <div class="info-icon"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-search.svg"></div>
+            <div class="info-icon">
+              <div class="search">
+                <div class="magnifying-glass"></div>
+              </div>
+            </div>
             <div class="info-text">The Patriot Act allows for bulk phone call data collection, the same laws could be used to authorize <span class="bold">mass surveillance of Internet search data</span>. Without more transparency, there's no way to know how much of your Internet surfing is collected or stored.</div>
           </div>
           <div class="arrow-container"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-down.svg"></div>
