@@ -317,13 +317,23 @@
       .petition-link:hover {
         color: #00539F;
       }
+      /* For whatever reason flexbox doesn't center the number very well */
+      .number span {
+        margin-bottom: 1px;
+      }
+      .step-2 .number span {
+        margin-left: 1px;
+      }
+      .step-3 .number span {
+        margin-left: 3px;
+      }
       .number {
         transition: color .3s;
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
+        width: 66px;
+        height: 66px;
         color: #4D4E53;
-        font-weight: 600;
+        font-weight: 300;
         justify-content: center;
         display: flex;
         flex-shrink: 0;
@@ -382,7 +392,8 @@
       .your-answer {
         text-transform: uppercase;
         font-size: 14px;
-        color: #D7D3C8;
+        color: #FFFFFF;
+        opacity: .4;
       }
       .circle {
         background-color: #D7D3C8;
@@ -396,7 +407,7 @@
         margin-left: -105px;
       }
       .your-answer-container {
-        border: 1px solid #D7D3C8;
+        border: 1px solid rgba(255, 255, 255, .4);
         font-size: 28px;
         font-weight: 300;
         justify-content: center;
@@ -957,14 +968,16 @@
             answered.classList.add("fadein");
             answerContainer.classList.add("status-" + type);
             setTimeout(function() {
+              var scrollTop = itemContainer.offsetTop;
               infoContainer.classList.add("expand");
               if (index === 3) {
+                scrollTop = itemContainer.offsetTop + itemContainer.offsetHeight;
                 finalStep.classList.remove("hidden");
               }
               setTimeout(function() {
                 $('html, body').animate({
-                  scrollTop: itemContainer.offsetTop + itemContainer.offsetHeight
-                });
+                  scrollTop: scrollTop
+                }, 500);
               }, 300);
             }, 300);
           });
@@ -1066,13 +1079,13 @@
       <img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/logo-mozilla.svg">
       <div class="petition-link-container">
         stop mass surveillance.
-        <a href="https://sendto.mozilla.org/page/s/section-215-petition" class="petition-link">&nbsp;<i class="fa fa-pencil"></i> sign the petition</a>.
+        <a href="https://sendto.mozilla.org/page/s/section-215-petition" class="petition-link">&nbsp;<i class="fa fa-pencil"></i> sign the petition</a>
       </div>
     </div>
     <div class="main">
       <div class="title">
         <div class="title-1">
-          If I'm not under
+          If I&rsquo;m not under
         </div>
         <div class="eye-spacing"></div>
         <div class="title-2">
@@ -1097,7 +1110,7 @@
         <div class="step-container">
           <div class="circle"></div>
           <div class="question-container">
-            <div class="number">1</div>
+            <div class="number"><span>1</span></div>
             <div class="question">Should the government monitor my phone calls?</div>
           </div>
           <div class="answer-container">
@@ -1135,7 +1148,7 @@
       <div class="item-container step-2">
         <div class="step-container">
           <div class="question-container">
-            <div class="number">2</div>
+            <div class="number"><span>2</span></div>
             <div class="question">Should the government be able to read my emails and see the photos I send?</div>
           </div>
           <div class="answer-container">
@@ -1165,7 +1178,7 @@
         <div class="info-container">
           <div class="info-wrapper">
             <div class="info-icon"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-mail.svg"></div>
-            <div class="info-text">Right now, the Patriot Act provision authorizing bulk collection of phone call data can be used to acquire "<span class="bold">any tangible thing</span>", which could allow the mass surveillance of your emails. Because of a lack of transparency, we don't know how much data they are collecting and on how many people.</div>
+            <div class="info-text">Right now, the Patriot Act provision authorizing bulk collection of phone call data can be used to acquire &ldquo;<span class="bold">any tangible thing</span>&rdquo;, which could allow the mass surveillance of your emails. Because of a lack of transparency, we don't know how much data they are collecting and on how many people.</div>
           </div>
           <div class="arrow-container"><img src="https://sendto.mozilla.org/page/-/surveillance-interstitial/icon-down.svg"></div>
         </div>
@@ -1173,7 +1186,7 @@
       <div class="item-container step-3">
         <div class="step-container">
           <div class="question-container">
-            <div class="number">3</div>
+            <div class="number"><span>3</span></div>
             <div class="question">Should the government know what I'm searching the internet for?</div>
           </div>
           <div class="answer-container">
