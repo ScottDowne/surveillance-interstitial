@@ -282,13 +282,6 @@
         margin: 0 auto;
         text-align: center;
       }
-      .vote-box {
-        margin: 0 auto;
-        width: 135px;
-        height: 3px;
-        background-color: #4D4E53;
-        border-top: 1px solid #979590;
-      }
       .item-container {
         text-align: left;
         overflow: hidden;
@@ -306,7 +299,7 @@
       .petition-link-container {
         float: right;
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: 800;
         font-size: 14px;
         margin-top: -14px;
       }
@@ -392,6 +385,7 @@
       .your-answer {
         text-transform: uppercase;
         font-size: 14px;
+        font-weight: 800;
         color: #FFFFFF;
         opacity: .4;
       }
@@ -481,7 +475,6 @@
         border: 1px solid rgba(255, 255, 255, .4);
         font-size: 28px;
         font-weight: 300;
-        justify-content: center;
       }
       .arrow-container {
         text-align: center;
@@ -507,16 +500,16 @@
       .your-answer-container.no-answer,
       .your-answer-container.yes-answer {
         position: absolute;
-        top: 30px;
-        bottom: 30px;
-        width: 123px;
+        top: 40px;
+        bottom: 40px;
+        width: 102px;
         transition: right .3s;
         opacity: 0;
         z-index: -1;
       }
       .status-no .your-answer-container.no-answer,
       .status-yes .your-answer-container.yes-answer {
-        right: 40px;
+        right: 87px;
         opacity: 1;
         z-index: 0;
       }
@@ -524,7 +517,7 @@
         right: 203px;
       }
       .no-answer {
-        right: 40px;
+        right: 50px;
       }
       .your-answer {
         width: 50%;
@@ -536,9 +529,10 @@
         display: flex;
         align-items: center;
         flex-shrink: 0;
+        justify-content: center;
       }
       .answered {
-        padding: 30px 70px 30px 65px;
+        padding: 40px 65px 40px 65px;
         color: #FFFFFF;
         opacity: 0;
         z-index: -1;
@@ -574,7 +568,7 @@
       .eye-spacing {
         float: left;
         height: 1px;
-        width: 157px;
+        width: 137px;
       }
       .status-yes .yes-answer,
       .status-no .no-answer {
@@ -639,7 +633,7 @@
         color: #FFFFFF;
         font-size: 27px;
         cursor: pointer;
-        padding: 30px 40px;
+        padding: 40px 50px;
         font-weight: 300;
       }
       .step-container {
@@ -655,7 +649,7 @@
       }
       .title-1 {
         text-align: right;
-        width: 328px;
+        width: 338px;
       }
       .title-2 {
         text-align: left;
@@ -667,13 +661,19 @@
       .main {
         margin-bottom: 185px;
       }
+      .final-step {
+        background: #FFFFFF;
+        padding-bottom: 57px;
+      }
       .final-step-text {
-        padding: 40px;
+        padding: 35px;
         font-size: 37px;
         font-weight: 300;
       }
       .cta-button {
+        z-index: 0;
         position: relative;
+        display: inline-block;
         font-family: inherit;
         font-weight: 300;
         font-weight: light;
@@ -734,7 +734,7 @@
         top: 0;
         padding: 2px;
         top: -85px;
-        left: -25px;
+        left: -26px;
       }
 
       .eye-container {
@@ -762,7 +762,7 @@
 
       .eye-image {
         margin-top: -150px;
-        margin-left: -75px;
+        margin-left: -77px;
       }
 
       .eyelid::before,
@@ -1466,7 +1466,6 @@
         </div>
       </div>
       <div class="final-step hidden">
-        <div class="vote-box"></div>
         <div class="cta-1 hidden">
           <div class="final-step-text">
             Join Mozilla and tell Congress it's time to stop mass surveillance and<br>
