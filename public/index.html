@@ -1649,7 +1649,7 @@
         });
 
         var
-        rectangle,
+          rectangle,
           radius = 7.5,
           iris = document.querySelector('.iris'),
           center;
@@ -1664,7 +1664,7 @@
 
         function doMaths(x, y, radius) {
           var
-          pythagoras = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)),
+          pythagoras = Math.sqrt(x*x + y*y),
             coordinates = {
               x: x,
               y: y
@@ -1677,7 +1677,7 @@
         }
 
         function translatePupil(coords) {
-          var transform = 'translate(' + Math.round(coords.x) + 'px, ' + Math.round(coords.y) + 'px)';
+          var transform = 'translate(' + (Math.round(coords.x*1000)/1000-0.5) + 'px, ' + (Math.round(coords.y*1000)/1000) + 'px)';
           iris.style.transform = transform;
         }
 
